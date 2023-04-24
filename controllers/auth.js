@@ -10,7 +10,7 @@ const createUser = async (req, res = response) => {
     if (oldEmail) {
       return res.status(400).json({
         ok: false,
-        msg: "The email is already registered",
+        errors:{error:"The email is already registered"} 
       });
     }
 
@@ -27,6 +27,7 @@ const createUser = async (req, res = response) => {
 
     res.json({
       ok: true,
+      msg:'register ok',
       user,
       token,
     });
@@ -38,6 +39,8 @@ const createUser = async (req, res = response) => {
     });
   }
 };
+
+
 
 
 const login = async (req, res = response) => {
@@ -77,6 +80,31 @@ const login = async (req, res = response) => {
   }
 };
 
+
+
+const changeUser=async(req,res=response)=>{
+  const uid=req.uid;
+  const {name,email}=req.body
+  const user=await User.findById(uid)
+  if(user){
+    user.name=name;
+    user.email=email
+    await user.save()
+    return res.json({
+      ok: true,
+      msg:'changes ok',
+      user,
+      token:''
+
+    })
+  }else{
+    return res.status(404).json({
+      ok: false,
+      msg: "User not found",
+    });
+  }
+}
+
 const renewToken=async(req,res=response)=>{
 
     const uid=req.uid;
@@ -94,6 +122,7 @@ const renewToken=async(req,res=response)=>{
 
     res.json({
         ok:true,
+        msg:'User found',
         user,
         token
     })
@@ -103,5 +132,7 @@ const renewToken=async(req,res=response)=>{
 module.exports = {
   createUser,
   login,
-  renewToken
+  renewToken,
+  changeUser,
+  
 };

@@ -8,7 +8,7 @@
 
 const {Router}=require('express');
 const { check } = require('express-validator');
-const { createUser,login, renewToken } = require('../controllers/auth');
+const { createUser,login, renewToken, changeUser, addFriends } = require('../controllers/auth');
 const { validateJWT } = require('../middlewares/validate-jwt');
 const { validateReq } = require('../middlewares/validate-req');
 
@@ -37,7 +37,12 @@ router.post('/',[
     validateReq
 ],login)
 
+router.post('/change',validateJWT,)
+
+
 
 router.get('/renew',validateJWT,renewToken)
+
+router.post('/change',[check('email','Must be a valid email').isEmail(),validateJWT],changeUser)
 
 module.exports=router

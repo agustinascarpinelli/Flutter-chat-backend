@@ -30,9 +30,9 @@ friends:{
 }
 });
 UserSchema.method('toJSON',function(){
-    const {__v,_id,password,online, friends,...object}=this.toObject();
+    const {__v,_id,password,...object}=this.toObject();
     object.uid=_id;
     return object
 })
-//Cuando se llama el toJSON de User, va a regresar el object que tiene el id (renmombrado a uuid, y todas las propiedades(...objetc) menos password , __v,friends y online)
+//Cuando se llama el toJSON de User, va a regresar el object que tiene el id (renmombrado a uuid, y todas las propiedades(...objetc) menos password , __v)
 module.exports=model('User',UserSchema)
